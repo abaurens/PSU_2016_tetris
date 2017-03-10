@@ -5,11 +5,12 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 20:44:18 2017 Arthur Baurens
-** Last update Tue Mar  7 17:35:50 2017 Arthur Baurens
+** Last update Tue Mar  7 18:04:43 2017 Arthur Baurens
 */
 
 #include <stdarg.h>
 #include <stdlib.h>
+#include "tetris.h"
 #include "get_next_line.h"
 
 int	clean_gnl(int ret, int fd)
@@ -61,4 +62,26 @@ char		**new_tab(int w, int h)
       res[i][w] = '\0';
     }
   return (res);
+}
+
+void	delete_tetri_tab(t_tetrimino *tetr)
+{
+  int	i;
+  int	a;
+  int	j;
+
+  i = -1;
+  while (tetr[++i].shape != 0)
+    {
+      a = -1;
+      while (++a < 4)
+	{
+	  j = -1;
+	  while (++j < tetr[i].shape[a].h)
+	    free(tetr[i].shape[a].data[j]);
+	  free(tetr[i].shape[a].data);
+	}
+      free(tetr[i].shape);
+    }
+  free(tetr);
 }

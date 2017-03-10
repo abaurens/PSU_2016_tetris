@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Tue Mar  7 17:33:55 2017 Arthur Baurens
-** Last update Tue Mar  7 17:42:45 2017 Arthur Baurens
+** Last update Fri Mar 10 11:08:47 2017 Arthur Baurens
 */
 
 #include <sys/types.h>
@@ -24,15 +24,15 @@ char	is_valid_header(const char *line, t_tetrimino *tetri)
   j = 0;
   if ((i = is_num(line)) <= 0)
     return (-1);
-  tetri->x = get_number(line);
+  tetri->x = get_nbr(line);
   j += (i + 1);
   if (line[j - 1] != ' ' || (i = is_num(&line[j])) <= 0)
     return (-1);
-  tetri->y = get_number(&line[j]);
+  tetri->y = get_nbr(&line[j]);
   j += (i + 1);
   if (line[j - 1] != ' ' || (i = is_num(&line[j])) <= 0)
     return (-1);
-  tetri->color = get_number(&line[j]);
+  tetri->color = get_nbr(&line[j]);
   if (line[j + i] != '\0')
     return (-1);
   return (0);

@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 16:48:21 2017 Arthur Baurens
-** Last update Tue Mar  7 17:33:16 2017 Arthur Baurens
+** Last update Thu Mar  9 12:05:20 2017 Arthur Baurens
 */
 
 #include <unistd.h>
@@ -35,14 +35,27 @@ int	my_strcmp(const char *s1, const char *s2)
 
 char	end_with(const char *name, const char *ref)
 {
-  int		i;
-  int		j;
+  int	i;
+  int	j;
 
   i = str_len(name);
   j = str_len(ref);
   while (--i >= 0 && --j >= 0)
     {
       if (name[i] != ref[j])
+	return (0);
+    }
+  return (1);
+}
+
+char	start_with(const char *name, const char *ref)
+{
+  int	i;
+
+  i = -1;
+  while (ref && ref[++i])
+    {
+      if (name[i] != ref[i])
 	return (0);
     }
   return (1);

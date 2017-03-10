@@ -5,31 +5,24 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Thu Mar  2 16:38:42 2017 Arthur Baurens
-** Last update Tue Mar  7 17:30:56 2017 Arthur Baurens
+** Last update Thu Mar  9 20:04:05 2017 Arthur Baurens
 */
 
 #include "tetris.h"
 
-int		main(int ac, char **av)
+void		print_tab(t_tetrimino *tetriminos)
 {
   int		i;
   int		a;
   int		h;
   int		loop;
-  t_tetrimino	*tetriminos;
 
-  ac = ac;
-  av = av;
-  tetriminos = get_tetriminos();
   i = -1;
-  while (tetriminos[++i].shape)
+  while (tetriminos[++i].shape && (h = 0) == 0 && (loop = 1))
     {
-      h = 0;
-      loop = 1;
-      while (loop)
+      while (loop && (loop = 0) == 0)
 	{
 	  a = -1;
-	  loop = 0;
 	  while (++a < 4)
 	    {
 	      if (h >= tetriminos[i].shape[a].h)
@@ -44,5 +37,41 @@ int		main(int ac, char **av)
 	  h++;
 	}
     }
+}
+
+t_tetris	init_tetris()
+{
+  t_tetris	tetris;
+
+  tetris.w = 10;
+  tetris.h = 20;
+  tetris.level = 1;
+  tetris.flags = 0;
+  return (tetris);
+}
+
+/*
+** void	my_put_bin(char nb)
+** {
+**   if (nb / 2 > 0)
+**     my_put_bin(nb / 2);
+**   nb = nb % 2 + '0';
+**   write(1, &nb, 1);
+** }
+*/
+
+int		main(int ac, char **av)
+{
+  char		res;
+  t_tetrimino	*tetriminos;
+  t_tetris	tetris;
+
+  tetris = init_tetris();
+  if ((res = parse_opt(&tetris, ac, av)) != 0)
+    return (res == -1 ? 84 : 0);
+  if ((tetriminos = get_tetriminos()) == 0)
+    return (84);
+  print_tab(tetriminos);
+  delete_tetri_tab(tetriminos);
   return (0);
 }

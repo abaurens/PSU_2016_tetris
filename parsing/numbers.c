@@ -5,12 +5,12 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 20:22:43 2017 Arthur Baurens
-** Last update Fri Mar  3 21:33:05 2017 Arthur Baurens
+** Last update Fri Mar 10 11:07:54 2017 Arthur Baurens
 */
 
 #include "limits.h"
 
-int	get_number(const char *num)
+int	get_nbr(const char *num)
 {
   int	i;
   long	nb;
