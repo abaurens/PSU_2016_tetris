@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Wed Mar  8 11:32:43 2017 Arthur Baurens
-** Last update Fri Mar 10 13:22:41 2017 Arthur Baurens
+** Last update Sat Mar 11 11:55:07 2017 Arthur Baurens
 */
 
 #include <stdlib.h>
@@ -37,7 +37,7 @@ char		exec_opt(t_tetris *tetris, t_opt *options, int ac, char **av)
       if (i > 10 || (i = func[(int)i](tetris, optarg)) != 0)
 	return (i);
     }
-  return (i);
+  return (i == -1 ? 0 : -1);
 }
 
 char		parse_opt(t_tetris *tetris, int ac, char **av)
