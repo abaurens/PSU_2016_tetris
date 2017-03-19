@@ -5,9 +5,10 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 20:22:43 2017 Arthur Baurens
-** Last update Fri Mar 10 11:07:54 2017 Arthur Baurens
+** Last update Wed Mar 15 14:06:48 2017 Arthur Baurens
 */
 
+#include <unistd.h>
 #include "limits.h"
 
 int	get_nbr(const char *num)
@@ -25,6 +26,23 @@ int	get_nbr(const char *num)
 	return (0);
     }
   return (nb);
+}
+
+void	put_nbr(int nbr)
+{
+  char	c;
+  long	nb;
+
+  nb = nbr;
+  if (nb < 0)
+    {
+      nb = -nb;
+      write(1, "-", 1);
+    }
+  if (nb / 10 > 0)
+    put_nbr(nb / 10);
+  c = nb % 10 + '0';
+  write(1, &c, 1);
 }
 
 int	is_num(const char *str)

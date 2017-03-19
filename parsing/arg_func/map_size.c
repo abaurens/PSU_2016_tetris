@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Wed Mar  8 15:10:39 2017 Arthur Baurens
-** Last update Fri Mar 10 11:08:47 2017 Arthur Baurens
+** Last update Wed Mar 15 14:20:38 2017 Arthur Baurens
 */
 
 #include <unistd.h>
@@ -19,14 +19,14 @@ char	map_size(t_tetris *tetris, char *arg)
 
   i = -1;
   while (arg[++i] && arg[i] != ',');
-  if ((w = get_nbr(arg)) < 1 || arg[i] != ',' || (h = get_nbr(&arg[++i])) < 1)
+  if ((h = get_nbr(arg)) < 1 || arg[i] != ',' || (w = get_nbr(&arg[++i])) < 1)
     {
       write(2, "./tetris: invalid map size : '", 30);
       write(2, arg, str_len(arg));
       write(2, "'\n", 2);
       return (-1);
     }
-  tetris->w = w;
   tetris->h = h;
+  tetris->w = w;
   return (0);
 }

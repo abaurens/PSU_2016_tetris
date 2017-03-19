@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 15:50:49 2017 Arthur Baurens
-** Last update Tue Mar  7 17:36:02 2017 Arthur Baurens
+** Last update Fri Mar 17 17:27:13 2017 Arthur Baurens
 */
 
 #include <sys/types.h>
@@ -45,11 +45,11 @@ char	file_to_tetri(int fd, t_tetrimino *tetri)
   char	*line;
 
   i = 0;
-  if ((tetri->shape = malloc(sizeof(t_unitetr) * 4)) == NULL)
+  if ((tetri->shape = malloc(sizeof(t_shape) * 4)) == NULL)
     return (-3);
   if ((tetri->shape[0].data = malloc(sizeof(char *) * (tetri->y + 1))) == NULL)
     return (-3);
-  tetri->shape[0].data[tetri->y] = NULL;
+  tetri->shape[0].data[(int)(tetri->y)] = NULL;
   tetri->shape[0].w = tetri->x;
   tetri->shape[0].h = tetri->y;
   while ((line = get_next_line(fd)) != NULL)
@@ -63,21 +63,33 @@ char	file_to_tetri(int fd, t_tetrimino *tetri)
   return (0);
 }
 
-void		parse_files(t_list **list)
+void		parse_files(t_tetris *tetris, t_list **list)
 {
+  char		error;
   t_list	*cur;
   t_list	*del;
 
   cur = *list;
+  tetris->tetri_count = 0;
+  if ((tetris->flags & F_DEBUG) != 0)
+    {
+      write(1, "Tetriminos :  ", 14);
+      put_nbr(list_size(*list));
+      write(1, "\n", 1);
+    }
   while (cur != NULL)
     {
       del = NULL;
-      if (use_file(cur) < 0)
+      if ((error = use_file(cur)) < 0 || tetris->tetri_count++ < 0)
 	  del = cur;
+      if ((tetris->flags & F_DEBUG) != 0)
+	print_tetri_debug(cur, error);
       cur = cur->next;
       if (del != NULL)
 	delete(list, del);
     }
+  if ((tetris->flags & F_DEBUG) != 0)
+    read(0, &error, 1 + 0 * write(1, "Press any key to start Tetris\n", 30));
 }
 
 char		rotate(t_tetrimino *t, int i)
@@ -106,7 +118,7 @@ char		rotate(t_tetrimino *t, int i)
   return (0);
 }
 
-t_tetrimino	*get_tetriminos()
+t_tetrimino	*get_tetriminos(t_tetris *tetris)
 {
   int		i;
   int		a;
@@ -117,7 +129,7 @@ t_tetrimino	*get_tetriminos()
   if (get_file_list(&lst) < 0)
     return (NULL);
   sort_list(&lst);
-  parse_files(&lst);
+  parse_files(tetris, &lst);
   if ((res = malloc(sizeof(t_tetrimino) * (list_size(lst) + 1))) == NULL)
     return (NULL);
   while (lst != NULL)

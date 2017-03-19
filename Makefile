@@ -5,7 +5,7 @@
 ## Login   <arthur.baurens@epitech.eu>
 ##
 ## Started on  Thu Mar  2 16:39:38 2017 Arthur Baurens
-## Last update Thu Mar  9 11:53:08 2017 Arthur Baurens
+## Last update Sun Mar 19 19:36:31 2017 Arthur Baurens
 ##
 
 CC		=		gcc
@@ -14,7 +14,11 @@ NAME	=		tetris
 
 SRC		=		main.c									              \
 					list.c									              \
+					game.c																\
+					rules.c																\
+					display.c															\
 					get_next_line.c					              \
+					parsing/debug.c												\
 					parsing/string.c				              \
 					parsing/numbers.c				              \
 					parsing/parsing.c				              \
@@ -41,13 +45,12 @@ INCLUDE	=	-I./include
 CFLAGS	+=	$(INCLUDE) -g -W -Wall -Wextra -pedantic
 
 $(NAME):	$(OBJ)
-	gcc -o $(NAME) $(OBJ)
-	mv -f $(OBJ) ./objs/
+	gcc -o $(NAME) $(OBJ) -lncurses
 
 all:	$(NAME)
 
 clean:
-	rm -rf ./objs/* $(OBJ)
+	rm -rf $(OBJ)
 
 fclean: clean
 	rm -rf $(NAME)

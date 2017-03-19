@@ -5,39 +5,11 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Thu Mar  2 16:38:42 2017 Arthur Baurens
-** Last update Thu Mar  9 20:04:05 2017 Arthur Baurens
+** Last update Sun Mar 19 17:54:36 2017 Arthur Baurens
 */
 
+#include <unistd.h>
 #include "tetris.h"
-
-void		print_tab(t_tetrimino *tetriminos)
-{
-  int		i;
-  int		a;
-  int		h;
-  int		loop;
-
-  i = -1;
-  while (tetriminos[++i].shape && (h = 0) == 0 && (loop = 1))
-    {
-      while (loop && (loop = 0) == 0)
-	{
-	  a = -1;
-	  while (++a < 4)
-	    {
-	      if (h >= tetriminos[i].shape[a].h)
-		printf("          ");
-	      else
-		{
-		  printf("%-10s", tetriminos[i].shape[a].data[h]);
-		  loop = 1;
-		}
-	    }
-	  printf("\n");
-	  h++;
-	}
-    }
-}
 
 t_tetris	init_tetris()
 {
@@ -47,31 +19,49 @@ t_tetris	init_tetris()
   tetris.h = 20;
   tetris.level = 1;
   tetris.flags = 0;
+  tetris.keys.kd = 258;
+  tetris.keys.kt = 259;
+  tetris.keys.kl = 260;
+  tetris.keys.kr = 261;
+  tetris.keys.kp = ' ';
+  tetris.keys.kq = 'q';
+  tetris.is_paused = 0;
   return (tetris);
 }
 
-/*
-** void	my_put_bin(char nb)
-** {
-**   if (nb / 2 > 0)
-**     my_put_bin(nb / 2);
-**   nb = nb % 2 + '0';
-**   write(1, &nb, 1);
-** }
-*/
+void	print_debug(t_tetris *tetris)
+{
+  char	next;
+
+  next = ((tetris->flags & F_NONXT) == 0);
+  write(1, "*** DEBUG MODE ***\n", 19);
+  write(1, "Next : ", 7);
+  write(1,  next ? "Yes\n" : "No\n", next ? 4 : 3);
+  write(1, "Level : " , 8);
+  put_nbr(tetris->level);
+  write(1, "\nSize : ", 8);
+  put_nbr(tetris->h);
+  write(1, "*", 1);
+  put_nbr(tetris->w);
+  write(1, "\n", 1);
+}
 
 int		main(int ac, char **av)
 {
   char		res;
-  t_tetrimino	*tetriminos;
   t_tetris	tetris;
 
   tetris = init_tetris();
   if ((res = parse_opt(&tetris, ac, av)) != 0)
     return (res == -1 ? 84 : 0);
-  if ((tetriminos = get_tetriminos()) == 0)
+  if ((tetris.flags & F_DEBUG) != 0)
+    print_debug(&tetris);
+  if ((tetris.tetriminos = get_tetriminos(&tetris)) == 0)
     return (84);
-  print_tab(tetriminos);
-  delete_tetri_tab(tetriminos);
+  if ((tetris.map = new_tab(tetris.w, tetris.h)) != NULL &&
+      (tetris.color_map = new_tab(tetris.w, tetris.h)) != NULL)
+    start_game(&tetris);
+  free_tab(tetris.map);
+  delete_tetri_tab(tetris.tetriminos);
   return (0);
 }

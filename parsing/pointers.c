@@ -5,7 +5,7 @@
 ** Login   <arthur.baurens@epitech.eu>
 **
 ** Started on  Fri Mar  3 20:44:18 2017 Arthur Baurens
-** Last update Tue Mar  7 18:04:43 2017 Arthur Baurens
+** Last update Fri Mar 17 10:18:49 2017 Arthur Baurens
 */
 
 #include <stdarg.h>
@@ -62,6 +62,18 @@ char		**new_tab(int w, int h)
       res[i][w] = '\0';
     }
   return (res);
+}
+
+void		free_tab(void *tab_to_free)
+{
+  int		i;
+  void		**tab;
+
+  i = -1;
+  tab  = (void **)tab_to_free;
+  while (tab_to_free != NULL && tab[++i] != NULL)
+    free(tab[i]);
+  free(tab);
 }
 
 void	delete_tetri_tab(t_tetrimino *tetr)
